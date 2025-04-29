@@ -1,0 +1,3 @@
+export const STORAGE_KEY = {
+  MEMBER_RECORDS: 'MEMBER_RECORDS',
+}
