@@ -3,7 +3,7 @@ import { PropsWithChildren, useEffect, useState } from 'react'
 
 interface FormSubmitButtonProps extends PropsWithChildren {
   form: FormInstance
-  onClick: () => void
+  onClick?: () => void
 }
 
 function FormSubmitButton({ form, children, onClick }: FormSubmitButtonProps) {
@@ -19,7 +19,7 @@ function FormSubmitButton({ form, children, onClick }: FormSubmitButtonProps) {
   }, [form, values])
 
   return (
-    <Button type="primary" disabled={!submittable} onClick={onClick}>
+    <Button type="primary" htmlType="submit" disabled={!submittable} onClick={onClick}>
       {children}
     </Button>
   )

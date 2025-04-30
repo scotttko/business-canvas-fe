@@ -4,6 +4,7 @@ import { css } from '@emotion/react'
 import { Button, Flex, Form } from 'antd'
 import { useEffect } from 'react'
 import MemberRecordFormItem from './MemberRecordFormItem'
+import { FormSubmitButton } from '@/components/shared/form'
 
 interface MemberRecordFormProps {
   record: MemberFormRecord | null
@@ -38,9 +39,7 @@ function MemberRecordForm({ record, onSaveRecord, onClose }: MemberRecordFormPro
 
       <Flex align="center" justify="end" gap={8} css={formFooterStyles}>
         {onClose && <Button onClick={onClose}>취소</Button>}
-        <Button type="primary" htmlType="submit">
-          {record ? '수정' : '추가'}
-        </Button>
+        <FormSubmitButton form={form}>{record ? '수정' : '추가'}</FormSubmitButton>
       </Flex>
     </Form>
   )

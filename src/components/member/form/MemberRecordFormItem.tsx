@@ -1,13 +1,26 @@
-import FormItemLabel from '@/components/shared/form/FormItemLabel'
+import { Checkbox, DatePicker, Select } from '@/components/shared'
+import { FormItemLabel } from '@/components/shared/form'
 import { Field, MemberFieldName } from '@/models/member'
-import { Checkbox, DatePicker, Form, FormItemProps, Input, Select } from 'antd'
+import { Form, FormItemProps, Input } from 'antd'
+import { ReactNode } from 'react'
 
 interface MemberRecordFormItemProps {
   field: Field<MemberFieldName>
 }
 
+const componentMap: Record<
+  Field<MemberFieldName>['type'],
+  (field: Field<MemberFieldName>) => ReactNode
+> = {
+  text: () => <Input />,
+  textarea: () => <Input.TextArea rows={2} />,
+  date: () => <DatePicker />,
+  select: (field) => <Select options={field.options?.map((opt) => ({ label: opt, value: opt }))} />,
+  checkbox: (field) => <Checkbox>{field.label}</Checkbox>,
+}
+
 function MemberRecordFormItem({ field }: MemberRecordFormItemProps) {
-  const { type, name, label, required, options } = field
+  const { type, name, label, required } = field
 
   const rules = [
     { required, message: `${label}을 입력해주세요.` },
@@ -21,48 +34,13 @@ function MemberRecordFormItem({ field }: MemberRecordFormItemProps) {
     rules,
     validateFirst: true,
     initialValue: field.name === 'emailAgreed' ? false : '',
+    ...(type === 'select' && { style: { width: 'fit-content' } }),
+    ...(type === 'checkbox' && { valuePropName: 'checked' }),
   }
 
-  switch (type) {
-    case 'text':
-      return (
-        <Form.Item key={name} {...sharedProps}>
-          <Input />
-        </Form.Item>
-      )
-    case 'textarea':
-      return (
-        <Form.Item key={name} {...sharedProps}>
-          <Input.TextArea rows={2} />
-        </Form.Item>
-      )
-    case 'date':
-      return (
-        <Form.Item key={name} {...sharedProps}>
-          <DatePicker style={{ width: 160 }} />
-        </Form.Item>
-      )
-    case 'select':
-      return (
-        <Form.Item key={name} {...sharedProps} style={{ width: 'fit-content' }}>
-          <Select
-            options={options?.map((opt) => ({ label: opt, value: opt }))}
-            allowClear
-            style={{ minWidth: 85 }}
-            dropdownStyle={{ width: 198 }}
-            popupMatchSelectWidth={false}
-          />
-        </Form.Item>
-      )
-    case 'checkbox':
-      return (
-        <Form.Item key={name} {...sharedProps} valuePropName="checked">
-          <Checkbox>{label}</Checkbox>
-        </Form.Item>
-      )
-    default:
-      return null
-  }
+  const renderComponent = componentMap[type]
+
+  return <Form.Item {...sharedProps}>{renderComponent(field)}</Form.Item>
 }
 
 export default MemberRecordFormItem

@@ -1,8 +1,8 @@
+import { Checkbox } from '@/components/shared'
+import { TableActionDropdown, TableFilterDropdown } from '@/components/shared/table'
 import { Field } from '@/models/member'
-import { Checkbox, MenuProps, TableColumnType, TableProps } from 'antd'
+import { MenuProps, TableColumnType, TableProps } from 'antd'
 import { useCallback, useMemo } from 'react'
-import TableFilterDropdown from '@/components/member/table/TableFilterDropdown'
-import TableActionDropdown from '@/components/member/table/TableActionDropdown'
 
 interface UseTableProps<T, N extends keyof T = keyof T> {
   data: T[]

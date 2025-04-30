@@ -20,6 +20,14 @@ createRoot(document.getElementById('root')!).render(
           Typography: {
             titleMarginBottom: 0,
           },
+          DatePicker: {
+            cellWidth: 39,
+          },
+          Select: {
+            hoverBorderColor: '#739fff',
+            activeBorderColor: '#E3E3E3',
+            activeOutlineColor: 'none',
+          },
         },
       }}
     >
