@@ -1,11 +1,19 @@
+import { MemberRecord } from '@/models/member'
 import { MoreOutlined } from '@ant-design/icons'
 import { Button, Dropdown, MenuProps } from 'antd'
 
-function TableActionDropdown() {
+interface TableActionDropdownProps {
+  record: MemberRecord
+  onEditClick: (record?: MemberRecord) => void
+  onDeleteClick: (recordId: string) => void
+}
+
+function TableActionDropdown({ record, onEditClick, onDeleteClick }: TableActionDropdownProps) {
   const items: MenuProps['items'] = [
     {
       label: '수정',
       key: 'edit',
+      onClick: () => onEditClick(record),
     },
     {
       type: 'divider',
@@ -14,16 +22,13 @@ function TableActionDropdown() {
       label: '삭제',
       key: 'delete',
       danger: true,
+      onClick: () => onDeleteClick(record.id),
     },
   ]
 
-  const handleMenuClick: MenuProps['onClick'] = ({ key }) => {
-    console.log({ key })
-  }
-
   return (
     <Dropdown
-      menu={{ items, onClick: handleMenuClick }}
+      menu={{ items }}
       trigger={['click']}
       overlayStyle={{ minWidth: 185 }}
       placement="bottomRight"

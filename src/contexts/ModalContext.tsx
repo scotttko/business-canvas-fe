@@ -85,10 +85,6 @@ const modalStyles = css`
     top: 12px;
   }
 
-  /* .ant-modal-body {
-    padding: 10px 24px;
-  } */
-
   .ant-modal-footer {
     padding: 12px 16px;
     border-top: 1px solid rgba(0, 0, 0, 0.06);

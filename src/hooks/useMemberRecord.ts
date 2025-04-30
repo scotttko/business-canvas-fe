@@ -1,48 +1,66 @@
+import { INITIAL_MEMBER_RECORD } from '@/constants/member'
 import { STORAGE_KEY } from '@/constants/storage'
 import { MemberRecord } from '@/models/member'
 import { StorageMode } from '@/models/storage'
-import { getLocalStorage } from '@/utils/storage'
+import { getLocalStorage, setLocalStorage } from '@/utils/storage'
 import { useCallback, useState } from 'react'
 
 const STORAGE_MODE: StorageMode = import.meta.env.VITE_STORAGE || 'in-memory'
 
-const initialRecordData: MemberRecord[] = [
-  {
-    id: crypto.randomUUID(),
-    name: 'John Doe',
-    address: '서울 강남구',
-    memo: '외국인',
-    date: '2024-10-02',
-    job: '개발자',
-    emailAgreed: true,
-  },
-  {
-    id: crypto.randomUUID(),
-    name: 'Foo Bar',
-    address: '서울 서초구',
-    memo: '한국인',
-    date: '2024-10-01',
-    job: 'PO',
-    emailAgreed: false,
-  },
-]
-
 const getInitialRecord = () => {
   if (STORAGE_MODE === 'local-storage') {
-    const storedRecords = getLocalStorage<MemberRecord[]>(STORAGE_KEY.MEMBER_RECORDS) ?? [
-      ...initialRecordData,
-    ]
+    const storedRecords = getLocalStorage<MemberRecord[]>(STORAGE_KEY.MEMBER_RECORDS)
+
+    if (!storedRecords) {
+      setLocalStorage<MemberRecord[]>(STORAGE_KEY.MEMBER_RECORDS, [...INITIAL_MEMBER_RECORD])
+      return [...INITIAL_MEMBER_RECORD]
+    }
 
     return storedRecords
   }
 
-  return [...initialRecordData]
+  return [...INITIAL_MEMBER_RECORD]
+}
+
+const updateStorageRecord = (record: MemberRecord[]) => {
+  if (STORAGE_MODE === 'local-storage') {
+    setLocalStorage<MemberRecord[]>(STORAGE_KEY.MEMBER_RECORDS, record)
+  }
 }
 
 function useMemberRecord() {
   const [memberRecords, setMemberRecords] = useState<MemberRecord[]>(() => getInitialRecord())
 
-  return { records: memberRecords, setRecords: setMemberRecords }
+  const handleSaveRecord = useCallback(
+    (record: MemberRecord) => {
+      const recordIndex = memberRecords.findIndex((prevRecord) => prevRecord.id === record.id)
+      const newRecords =
+        recordIndex === -1
+          ? [...memberRecords, { ...record, id: crypto.randomUUID() }]
+          : memberRecords.map((r) => (r.id === record.id ? record : r))
+
+      setMemberRecords(newRecords)
+      updateStorageRecord(newRecords)
+    },
+    [memberRecords],
+  )
+
+  const handleDeleteRecord = useCallback(
+    (recordId: string) => {
+      const newRecords = memberRecords.filter((r) => r.id !== recordId)
+
+      setMemberRecords(newRecords)
+      updateStorageRecord(newRecords)
+    },
+    [memberRecords],
+  )
+
+  return {
+    records: memberRecords,
+    setRecords: setMemberRecords,
+    onSaveRecord: handleSaveRecord,
+    onDeleteRecord: handleDeleteRecord,
+  }
 }
 
 export default useMemberRecord

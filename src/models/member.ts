@@ -1,6 +1,17 @@
-export type FieldType = 'text' | 'textarea' | 'date' | 'select' | 'checkbox'
+import { Dayjs } from 'dayjs'
+export interface MemberRecord {
+  id: string
+  name: string
+  address: string
+  memo: string
+  date: string
+  job: string
+  emailAgreed: boolean
+}
 
-export type MemberFieldName = 'name' | 'address' | 'memo' | 'date' | 'job' | 'emailAgreed'
+export type MemberFieldName = Exclude<keyof MemberRecord, 'id'>
+
+export type FieldType = 'text' | 'textarea' | 'date' | 'select' | 'checkbox'
 
 export interface Field<T> {
   type: FieldType
@@ -15,12 +26,6 @@ export interface FieldColumn<T> {
   dataIndex: T
 }
 
-export interface MemberRecord {
-  id: string
-  name: string
-  address: string
-  memo: string
-  date: string
-  job: string
-  emailAgreed: boolean
+export interface MemberFormRecord extends Omit<MemberRecord, 'date'> {
+  date: Dayjs
 }
