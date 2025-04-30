@@ -1,54 +1,19 @@
-# React + TypeScript + Vite
+# 비즈니스캔버스 FE 채용 과제
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+개발 기간: 2025.04.29 - 2025.04.30
 
-Currently, two official plugins are available:
+## 프로젝트 실행 방법
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. install dependencies  
+   `yarn`
 
-## Expanding the ESLint configuration
+2. run project  
+   `yarn dev`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 구현 내용
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- 회원 목록 Table 구현
+  - `useMemberRecord` 훅 분리하여 storage env 체크 및 레코드 추가/수정/삭제 로직 추상화
+  - `useTable` 훅으로 테이블의 column 등의 공통 props 분리
+  - `ModalContext`를 전역으로 정의하여 모달 open/close 로직을 일관된 방식으로 처리할 수 있도록 구현
+  - `FormItem` 컴포넌트를 분리하여 Form을 구성하는 아이템을 field 타입에 따라 렌더링되도록 구현

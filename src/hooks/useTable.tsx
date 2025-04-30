@@ -18,16 +18,11 @@ function useTable<T extends { [K in keyof T]: string | boolean }, N extends keyo
 }: UseTableProps<T, N>) {
   const getColumnFilter = useCallback(
     (field: Field<N>): { text: string; value: string }[] => {
-      const recordValueSet = new Set(
-        data
-          .map((r) => r[field.name])
-          .filter((v) => !!v)
-          .map((v) => String(v)),
-      )
+      const recordValueSet = new Set(data.map((r) => String(r[field.name])).filter((v) => !!v))
 
       const labelMap = getFilterLabelMap?.(field.name) ?? {}
 
-      return Array.from(recordValueSet).map((val) => ({
+      return [...recordValueSet].map((val) => ({
         text: labelMap[val] ?? val,
         value: val,
       }))

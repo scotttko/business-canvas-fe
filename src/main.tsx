@@ -5,6 +5,7 @@ import { ConfigProvider } from 'antd'
 import { Global } from '@emotion/react'
 import globalStyles from './styles/globalStyles.ts'
 import { ModalProvider } from './contexts/ModalContext.tsx'
+import '@ant-design/v5-patch-for-react-19'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
