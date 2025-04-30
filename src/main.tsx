@@ -4,6 +4,7 @@ import App from './App.tsx'
 import { ConfigProvider } from 'antd'
 import { Global } from '@emotion/react'
 import globalStyles from './styles/globalStyles.ts'
+import { ModalProvider } from './contexts/ModalContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -23,7 +24,9 @@ createRoot(document.getElementById('root')!).render(
       }}
     >
       <Global styles={globalStyles} />
-      <App />
+      <ModalProvider>
+        <App />
+      </ModalProvider>
     </ConfigProvider>
   </StrictMode>,
 )
